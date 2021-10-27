@@ -36,9 +36,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
  
 In order to run the webinterface:
 
-1)Copy paste the entire folder 
-2)Change the REACT_APP_SERVER_URL in src/.env file with your APIs URL
-3)Change serverURL in public/config.js file with your APIs URL
+1)Copy paste the entire folder </BR>
+2)Change the REACT_APP_SERVER_URL in src/.env file with your APIs URL<BR/>
+3)Change serverURL in public/config.js file with your APIs URL<BR/>
 4)Install the following:
 
 npm install --save @fortawesome/free-solid-svg-icons
