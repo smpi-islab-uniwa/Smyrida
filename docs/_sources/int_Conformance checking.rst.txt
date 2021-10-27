@@ -1,0 +1,44 @@
+Conformance checking 
+++++++++++++++++++++
+ 
+Conformance checking is a technique to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
+
+In PM4Py, two fundamental techniques are implemented: token-based replay and alignments. [6]
+
+**Token-based replay**
+
+Token-based replay matches a trace and a Petri net model, starting from the initial place, in order to discover which transitions are executed and in which places we have remaining or missing tokens for the given process instance. Token-based replay is useful for Conformance Checking: indeed, a trace is fitting according to the model if, during its execution, the transitions can be fired without the need to insert any missing token. If the reaching of the final marking is imposed, then a trace is fitting if it reaches the final marking without any missing or remaining tokens. 
+
+In PM4Py there is an implementation of a token that is able to go across hidden transitions (calculating shortest paths between places) and can be used with any Petri net model with unique visible transitions and hidden transitions. When a visible transition needs to be fired and not all places in the preset are provided with the correct number of tokens, starting from the current marking it is checked if for some place there is a sequence of hidden transitions that could be fired in order to enable the visible transition. The hidden transitions are then fired and a marking that permits to enable the visible transition is reached.
+
+First, the log is loaded. Then, the Alpha Miner is applied in order to discover a Petri net. Eventually, the token-based replay is applied. The output of the token-based replay, stored in the variable replayed_traces, contains for each trace of the log:
+
+* **trace_is_fit**: boolean value (True/False) that is true when the trace is according to the model.
+* **activated_transitions**: list of transitions activated in the model by the token-based replay.
+* **reached_marking**: marking reached at the end of the replay.
+* **missing_tokens**: number of missing tokens.
+* **consumed_tokens**: number of consumed tokens.
+* **remaining_tokens**: number of remaining tokens.
+* **produced_tokens**: number of produced tokens. 
+
+The token-based replay supports different parameters.
+
+**Alignments**
+
+Alignment-based replay aims to find one of the best alignment between the trace and the model. For each trace, the output of an alignment is a list of couples where the first element is an event (of the trace) or » and the second element is a transition (of the model) or ». For each couple, the following classification could be provided:
+
+* Sync move: the classification of the event corresponds to the transition label; in this case, both the trace and the model advance in the same way during the replay.
+* Move on log: for couples where the second element is », it corresponds to a replay move in the trace that is not mimicked in the model. This kind of move is unfit and signal a deviation between the trace and the model.
+* Move on model: for couples where the first element is », it corresponds to a replay move in the model that is not mimicked in the trace. For moves on model, we can have the following distinction:
+	* Moves on model involving hidden transitions: in this case, even if it is not a sync move, the move is fit.
+	* Moves on model not involving hidden transitions: in this case, the move is unfit and signals a deviation between the trace and the model.
+
+First, we have to import the log. Subsequently, we apply the Inductive Miner on the imported log. In addition, we compute the alignments.
+
+With each trace, a dictionary containing among the others the following information is associated:
+
+* **alignment**: contains the alignment (sync moves, moves on log, moves on model)
+* **cost**: contains the cost of the alignment according to the provided cost function
+* **fitness**: is equal to 1 if the trace is perfectly fitting
+
+Then, a process model is computed, and alignments are also calculated. Besides, the fitness value is calculated and the resulting values are printed.

@@ -1,0 +1,17 @@
+Alpha Miner
++++++++++++
+
+When the user hovers on Discover Model, then he can choose one of the discover algorithms as an option: alpha miner, inductive miner, heuristics miner.
+
+.. image:: images/3.20.jpg
+	:align: center
+
+In case the user chooses alpha miner then a webpage with a table will appear which show the Log Fitness, Precision, Generalization and Simplicity evaluation for the specific file. Also, petri net of the algorithm will appear under the table. The petri net is developed with react flow, an open-source library which allow the web user to drag and drop any transition and place of the graph.
+
+.. image:: images/3.21.jpg
+	:align: center
+
+In case the user chooses a csv file and then selects one of the above three options, then the choose heeder screen will appear and then the web interface will display the webpage with the table and the petri net.
+
+.. image:: images/3.24.jpg
+	:align: center

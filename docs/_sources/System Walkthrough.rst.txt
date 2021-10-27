@@ -1,0 +1,120 @@
+System Walkthrough
+++++++++++++++++++
+ 
+
+For this Walkthrough I used the file running-example.xes which can be found in the following link https://github.com/pm4py/pm4py-ws/blob/master/files/event_logs/running-example.xes
+
+* File upload
+
+
+.. image:: images/3.30.jpg
+	:align: center
+
+
+.. image:: images/3.31.jpg
+	:align: center
+
+
+.. image:: images/3.32.jpg
+	:align: center
+
+
+* Convert to csv
+
+.. image:: images/3.33.jpg
+	:align: center
+
+
+.. image:: images/3.34.jpg
+	:align: center
+
+
+.. image:: images/3.35.jpg
+	:align: center
+
+
+* View
+
+.. image:: images/3.36.jpg
+	:align: center
+
+
+.. image:: images/3.37.jpg
+	:align: center
+
+
+* Info
+
+
+.. image:: images/3.38.jpg
+	:align: center
+	
+	
+.. image:: images/3.39.jpg
+	:align: center
+
+
+* Alpha Miner
+
+
+.. image:: images/3.40.jpg
+	:align: center
+	
+	
+.. image:: images/3.41.jpg
+	:align: center
+
+
+* Heuristics Miner
+
+
+.. image:: images/3.42.jpg
+	:align: center
+	
+	
+.. image:: images/3.43.jpg
+	:align: center
+
+
+* Inductive Miner
+
+
+.. image:: images/3.44.jpg
+	:align: center
+	
+	
+.. image:: images/3.45.jpg
+	:align: center
+
+
+* Replay Results
+
+
+.. image:: images/3.46.jpg
+	:align: center
+	
+	
+.. image:: images/3.47.jpg
+	:align: center
+
+
+.. image:: images/3.48.jpg
+	:align: center
+
+
+* Aligments 
+
+
+.. image:: images/3.49.jpg
+	:align: center
+	
+	
+	
+.. image:: images/3.50.jpg
+	:align: center
+
+
+
+.. image:: images/3.51.jpg
+	:align: center
+	

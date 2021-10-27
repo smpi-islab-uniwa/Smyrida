@@ -1,0 +1,13 @@
+Introduction
+++++++++++++
+ 
+The field of process mining provides tools and techniques to increase the overall knowledge of a (business) process, by means of analyzing the event data stored during the execution of the process. Process mining received a lot of attention from both academia and industry, which led to the development of several commercial and open-source process mining tools. The majority of these tools supports process discovery, i.e., discovering a process model that accurately describes the process under study, as captured within the analyzed event data. However, process mining also comprises conformance checking, i.e., checking to what degree a given process model is accurately describing event data, and process enhancement, i.e., techniques that enhance process models by projecting interesting information, e.g., case flow and/or performance measures, on top of a model. The support of such types of process mining analysis is typically limited to open source, academic process mining tools such as the ProM Framework, Apromore, Disco, Celonis and others [1].
+
+The purpose of this master thesis was to develop a system in order to help a user to apply process mining techniques online. There are already systems that serve this need offline. This system is implemented in two levels:
+
+* the level of the API, which helps the user to receive data after data mining techniques so he can view or analyze them in his own way
+* the level of the web, at which the user can use it from any device he wants and doesn’t need to have a system on his computer
+
+Both the API and the interface provide the user data such as the events, the start events and the end events and how many times they appear in the file (in absolute value and as a percentage), the transitions and places in order to construct a petri net, conformance checking results and evaluation data (log fitness, precision, generalization, simplicity). Also, the project provides functions to help the users view and convert the file they want to use.
+
+Finally, this master thesis deals with the user’s need to change the petri net that the process mining techniques produce. This thesis website does not provide a static image of a petri net, but an html element of the petri net to help the user zoom in/out   and also to give him the ability of drag every transition and place so he can get a clear result of the process discovery.

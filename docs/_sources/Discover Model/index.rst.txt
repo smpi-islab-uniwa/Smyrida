@@ -1,0 +1,11 @@
+Discover Model 
+++++++++++++++
+
+.. toctree::   
+   :maxdepth: 2
+   :caption: Contents: 
+   
+   Alpha Miner.rst 
+   Heuristics Miner.rst  
+   Inductive Miner.rst 
+  

@@ -1,0 +1,68 @@
+.. Thesis documentation master file, created by
+   sphinx-quickstart on Fri Sep 17 21:23:53 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+ 
+.. image:: images/uniwa.jpg
+	:align: center
+
+UNIVERSITY OF WEST ATTICA 
+=========================
+DEPARTMENT OF INFORMATICS AND COMPUTER ENGINEERING
+--------------------------------------------------
+
+.. toctree::  
+   :hidden:
+   :caption: Introduction: 
+    
+   int_introduction2.rst   
+   int_Theoretical Background.rst
+   int_Process Discovery.rst
+   int_Conformance checking.rst
+   int_Evaluation.rst
+    
+.. toctree::  
+   :hidden:
+   :caption: Software: 
+    
+   Login/index.rst
+   File/index.rst
+   Discover Model/index.rst 
+   Statistics/index.rst
+   Conformance Checking/index.rst 
+   
+.. toctree::  
+   :hidden:  
+   
+   System Walkthrough.rst
+   
+.. toctree:: 
+   :maxdepth: 2
+   :hidden:
+   :caption: API: 
+    
+   APIFile/index.rst
+   Discover Model.rst
+   APIStatistics/index.rst
+   APIConformance Checking/index.rst 
+   
+.. toctree::  
+   :hidden:   
+   
+   References.rst
+   
+.. centered:: MSC IN COMPUTER SCIENCE AND ENGINEERING
+
+.. centered:: Specialization: Information Systems
+
+.. centered:: MASTER THESIS
+
+.. centered:: Development of a web-interface and web service API to support process mining techniques.
+
+.. centered:: Ilias Merkoureas
+
+.. centered:: Mcse19006
+
+.. centered:: Supervisor:
+
+.. centered:: Dr Georgios Miaoulis, Professor
