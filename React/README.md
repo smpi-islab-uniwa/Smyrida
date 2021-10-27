@@ -1,5 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+ 
 ## Available Scripts
 
 In the project directory, you can run:
@@ -66,3 +67,22 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+In order to run the webinterface:
+
+1)Copy paste the entire folder 
+2)Change the REACT_APP_SERVER_URL in src/.env file with your APIs URL
+3)Change serverURL in public/config.js file with your APIs URL
+4)Install the following:
+
+npm install --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/fontawesome-svg-core
+npm install --save @fortawesome/react-fontawesome
+npm i js-cookie
+npm install react-flow-renderer
+npm install react-loader-spinner --save
+npm install react-router-dom
+npm i reactjs-alert
+npm install --save-dev @babel/core
+npm install typescript
