@@ -41,13 +41,13 @@ In order to run the webinterface:
 3)Change serverURL in public/config.js file with your APIs URL<BR/>
 4)Install the following:
 
-npm install --save @fortawesome/free-solid-svg-icons
-npm i --save @fortawesome/fontawesome-svg-core
-npm install --save @fortawesome/react-fontawesome
-npm i js-cookie
-npm install react-flow-renderer
-npm install react-loader-spinner --save
-npm install react-router-dom
-npm i reactjs-alert
-npm install --save-dev @babel/core
-npm install typescript
+npm install --save @fortawesome/free-solid-svg-icons<BR/>
+npm i --save @fortawesome/fontawesome-svg-core<BR/>
+npm install --save @fortawesome/react-fontawesome<BR/>
+npm i js-cookie<BR/>
+npm install react-flow-renderer<BR/>
+npm install react-loader-spinner --save<BR/>
+npm install react-router-dom<BR/>
+npm i reactjs-alert<BR/>
+npm install --save-dev @babel/core<BR/>
+npm install typescript<BR/>
