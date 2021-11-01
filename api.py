@@ -30,6 +30,11 @@ from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.statistics.traces.log.case_statistics import get_variant_statistics
 from pm4py.statistics.attributes.log.get import get_all_event_attributes_from_log, get_attribute_values
+import sys
+import sqlite3
+
+os.environ['IP'] = '127.0.0.1:5000'
+cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 
 if os.path.exists('static') == False:
@@ -152,8 +157,8 @@ def read_request_file_to_dataframe():
              
 
 @app.route('/hello')
-def hello_world():
-   return "hello world"  
+def hello_world():   
+    return "hello world"  
 @app.route('/conceptname', methods=['POST', 'GET'])
 def conceptname():
     
@@ -166,9 +171,8 @@ def conceptname():
                 "concept:name": "Activity",
                 "case:concept:name" : "Trace ID",
                 "time:timestamp": "Date"})
-        fig.write_html('static/conceptname.html') 
-
-        results = [{ 'image':'http://127.0.0.1:5000/static/conceptname.html'}]
+        fig.write_html('static/conceptname.html')  
+        results = [{ 'image':'http://' + os.environ['IP'] + '/static/conceptname.html'}]
 
         response = jsonify(results)
 
@@ -203,7 +207,7 @@ def activity_duration():
                               
                  fig.write_html('static/activity_durations.html')
         
-                 apiresults = [{ 'image':'http://127.0.0.1:5000/static/activity_durations.html'}]
+                 apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/activity_durations.html'}]
         
                  response = jsonify(apiresults)
         
@@ -239,7 +243,7 @@ def trace_duration():
     
                  fig.write_html('static/trace_duration.html') 
     
-                 apiresults = [{ 'image':'http://127.0.0.1:5000/static/trace_duration.html'}]
+                 apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/trace_duration.html'}]
     
                  response = jsonify(apiresults)
     
@@ -286,7 +290,7 @@ def mean_durations():
     
                      fig.write_html('static/activity_mean_durations.html') 
     
-                     apiresults = [{ 'image':'http://127.0.0.1:5000/static/activity_mean_durations.html'}]
+                     apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/activity_mean_durations.html'}]
     
                      response = jsonify(apiresults)
     
@@ -328,23 +332,27 @@ def savefile():
     return response  
     
  
-@app.route('/authenticate', methods=['POST']) 
+@app.route('/authenticate', methods=['POST','GET']) 
 def authenticate(): 
-    
+ 
     usermail = str(request.form.get('usermail'))
-    
-    password = str(request.form.get('password'))  
-    print(usermail,password)
-
-    if path.exists('validation.csv'):
-        dataframe = pd.read_csv('validation.csv', sep=';')
-        #print(dataframe)
-        index = dataframe[dataframe['mail'] == usermail].index
-        #print(index)
-        #print(dataframe.loc[index,'password'].astype(str).item())
-        if (dataframe.loc[index,'password'].astype(str).item() == password):
-            apiresults = [{'success':usermail}] 
-            #print(apiresults)
+    password = str(request.form.get('password'))   
+    found=False 
+    if path.exists('smyrida.db'):
+        con = sqlite3.connect('smyrida.db')
+        cur = con.cursor() 
+        for row in cur.execute("SELECT username FROM users where username = ? AND password = ?" ,(usermail,password,)):
+            found=True
+        con.close()  
+        if found == True: 
+            filefound = False
+            for  root, directories,files in os.walk(usermail):
+                for filename in files: 
+                    splitedfile = filename.split('.', 1)
+                    if filetype_isvalid(splitedfile[-1]):
+                        filefound = True
+                        
+            apiresults = [{'success':usermail,'hasfiles':filefound}]  
             response = jsonify(apiresults)
             response.headers.set('Access-Control-Allow-Origin', '*')    
             response.headers.set('cache-control', 'public,max-age=0')  
@@ -352,45 +360,46 @@ def authenticate():
         else: 
             return errormessage('Cannot find user or password is incorrect')
     else:
-         return errormessage('Cannot find validation.csv')                                                             
+         return errormessage('Cannot find user or password is incorrect')    
+         
     
-    
-
-def append_list_as_row(file_name, list_of_elem):
-    # Open file in append mode
-    with open(file_name, 'a+', newline='') as write_obj:
-        # Create a writer object from csv module
-        csv_writer = writer(write_obj)
-        # Add contents of list as last row in the csv file
-        csv_writer.writerow(list_of_elem)
-
+     
 
 @app.route('/createuser', methods=['POST']) 
-def createuser(): 
-    
+def createuser():  
+    found=False
     usermail = request.form.get('usermail')     
     password = request.form.get('password')  
-    found=0
-    if path.exists('validation.csv'):
-        dataframe = pd.read_csv('validation.csv', sep=';')
-        # for x in dataframe:
-        for x in range(len(dataframe.index)):
-            # print(dataframe.iloc[x]['mail']) 
-            if usermail==str(dataframe.iloc[x]['mail']) and password==str(dataframe.iloc[x]['password']):
-                found=1 
-                return errormessage('User exists!')
-        if found == 0:
-            if not os.path.exists(usermail+'/'): 
-                os.makedirs(usermail+'/') 
-            row_contents = [usermail+';'+password]
-            append_list_as_row('validation.csv', row_contents)
-            apiresults = [{'success':usermail}] 
-            response = jsonify(apiresults)
-            response.headers.set('Access-Control-Allow-Origin', '*')    
-            response.headers.set('cache-control', 'public,max-age=0')  
-            return response       
+    if not os.path.exists(usermail+'/'): 
+                os.makedirs(usermail+'/')    
+    if path.exists('smyrida.db'):
+        con = sqlite3.connect('smyrida.db')
+        cur = con.cursor() 
+        for row in cur.execute("SELECT username FROM users where username = '%s'" % usermail):
+            con.close()  
+            return errormessage('This user already exists!') 
+        cur.execute("INSERT INTO users VALUES ('"+usermail+"','"+password+"')") 
+        con.commit() 
+        con.close()           
+        apiresults = [{'success':usermail}] 
+        response = jsonify(apiresults)
+        response.headers.set('Access-Control-Allow-Origin', '*')    
+        response.headers.set('cache-control', 'public,max-age=0')  
+        return response       
     else:
-        return errormessage('Cannot find validation.csv')
+         con = sqlite3.connect('smyrida.db')
+         cur = con.cursor() 
+         cur.execute('''CREATE TABLE users
+                       (username text, password text)''') 
+         cur.execute("INSERT INTO users VALUES ('"+usermail+"','"+password+"')") 
+         con.commit() 
+         con.close()  
+         apiresults = [{'success':usermail}] 
+         response = jsonify(apiresults)
+         response.headers.set('Access-Control-Allow-Origin', '*')    
+         response.headers.set('cache-control', 'public,max-age=0')  
+         return response 
+
  
 @app.route('/getfilenames', methods=['POST']) 
 def getfilenames():  
@@ -646,7 +655,7 @@ def graph():
                 })
             fig.write_html('static/graph.html') 
 
-            results = [{ 'image':'http://127.0.0.1:5000/static/graph.html'}]
+            results = [{ 'image':'http://' + os.environ['IP'] + '/static/graph.html'}]
 
             response = jsonify(results)
 
@@ -701,12 +710,11 @@ def getimage():
                 transitionlist.append(str(eachtransition))
                 
             for eacharc in netarcs:
-                arcslist.append(str(eacharc))   
-            
+                arcslist.append(str(eacharc))    
             file_path="static/temp.svg" 
             savesvgfromalgo.save_vis_petri_net(net, initial_marking, final_marking,file_path) 
         
-            apiresults = [{ 'image':'http://127.0.0.1:5000/static/temp.svg',
+            apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/temp.svg',
                             'log_fitness':evaluation['fitness']['log_fitness'],
                             'evaluation_result':evaluation['precision'],
                             'generalization':evaluation['generalization'],
@@ -840,6 +848,7 @@ def badrequest():
             response.headers.set('Access-Control-Allow-Origin', '*')    
             response.headers.set('cache-control', 'public,max-age=0')  
             return response   
-app.run( 
-)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
  
