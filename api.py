@@ -30,10 +30,6 @@ from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.statistics.traces.log.case_statistics import get_variant_statistics
 from pm4py.statistics.attributes.log.get import get_all_event_attributes_from_log, get_attribute_values
-import sys
-
-os.environ['IP'] = '127.0.0.1:5000'
-cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 
 if os.path.exists('static') == False:
@@ -156,7 +152,7 @@ def read_request_file_to_dataframe():
              
 
 @app.route('/hello')
-def hello_world():  
+def hello_world():
    return "hello world"  
 @app.route('/conceptname', methods=['POST', 'GET'])
 def conceptname():
@@ -170,8 +166,9 @@ def conceptname():
                 "concept:name": "Activity",
                 "case:concept:name" : "Trace ID",
                 "time:timestamp": "Date"})
-        fig.write_html('static/conceptname.html')  
-        results = [{ 'image':'http://' + os.environ['IP'] + '/static/conceptname.html'}]
+        fig.write_html('static/conceptname.html') 
+
+        results = [{ 'image':'http://127.0.0.1:5000/static/conceptname.html'}]
 
         response = jsonify(results)
 
@@ -206,7 +203,7 @@ def activity_duration():
                               
                  fig.write_html('static/activity_durations.html')
         
-                 apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/activity_durations.html'}]
+                 apiresults = [{ 'image':'http://127.0.0.1:5000/static/activity_durations.html'}]
         
                  response = jsonify(apiresults)
         
@@ -242,7 +239,7 @@ def trace_duration():
     
                  fig.write_html('static/trace_duration.html') 
     
-                 apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/trace_duration.html'}]
+                 apiresults = [{ 'image':'http://127.0.0.1:5000/static/trace_duration.html'}]
     
                  response = jsonify(apiresults)
     
@@ -289,7 +286,7 @@ def mean_durations():
     
                      fig.write_html('static/activity_mean_durations.html') 
     
-                     apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/activity_mean_durations.html'}]
+                     apiresults = [{ 'image':'http://127.0.0.1:5000/static/activity_mean_durations.html'}]
     
                      response = jsonify(apiresults)
     
@@ -331,32 +328,21 @@ def savefile():
     return response  
     
  
-@app.route('/authenticate', methods=['POST','GET']) 
+@app.route('/authenticate', methods=['POST']) 
 def authenticate(): 
- 
-    usermail = str(request.form.get('usermail'))
-    password = str(request.form.get('password'))  
-    #sys.stderr.write(usermail,password)
-    found=0
-
-    if path.exists('valid'):
     
-        #print(dataframe)
-       
+    usermail = str(request.form.get('usermail'))
+    
+    password = str(request.form.get('password'))  
+    print(usermail,password)
 
-        #index = dataframe[dataframe['mail'] == usermail].index
+    if path.exists('validation.csv'):
+        dataframe = pd.read_csv('validation.csv', sep=';')
+        #print(dataframe)
+        index = dataframe[dataframe['mail'] == usermail].index
         #print(index)
         #print(dataframe.loc[index,'password'].astype(str).item())
-        
-        file1 = open('valid', 'r') 
-        Lines = file1.readlines() 
-        for line in Lines:       
-            if '-' in line.strip():    
-                if line.strip().split('-')[0] == usermail.strip() and line.strip().split('-')[1] == password.strip():
-                    found = 1  
-        file1.close()
-        if found == 1:
-        # if (dataframe.loc[index,'password'].astype(str).item() == password):
+        if (dataframe.loc[index,'password'].astype(str).item() == password):
             apiresults = [{'success':usermail}] 
             #print(apiresults)
             response = jsonify(apiresults)
@@ -383,27 +369,26 @@ def append_list_as_row(file_name, list_of_elem):
 def createuser(): 
     
     usermail = request.form.get('usermail')     
-    password = request.form.get('password')   
-    if path.exists('valid'):
-        file1 = open('valid', 'r') 
-        Lines = file1.readlines() 
+    password = request.form.get('password')  
+    found=0
+    if path.exists('validation.csv'):
+        dataframe = pd.read_csv('validation.csv', sep=';')
         # for x in dataframe:
-        for line in Lines:       
-            if '-' in line.strip():    
-                if line.strip().split('-')[0] == usermail.strip() and line.strip().split('-')[1] == password.strip():
-                     return errormessage('User exists!') 
-        if not os.path.exists(usermail+'/'): 
-            os.makedirs(usermail+'/')
-        file1.close()
-        file2 = open('valid','a')
-        file2.write("\n")
-        file2.write(usermail+'-'+password) 
-        file2.close()
-        apiresults = [{'success':usermail}] 
-        response = jsonify(apiresults)
-        response.headers.set('Access-Control-Allow-Origin', '*')    
-        response.headers.set('cache-control', 'public,max-age=0')  
-        return response       
+        for x in range(len(dataframe.index)):
+            # print(dataframe.iloc[x]['mail']) 
+            if usermail==str(dataframe.iloc[x]['mail']) and password==str(dataframe.iloc[x]['password']):
+                found=1 
+                return errormessage('User exists!')
+        if found == 0:
+            if not os.path.exists(usermail+'/'): 
+                os.makedirs(usermail+'/') 
+            row_contents = [usermail+';'+password]
+            append_list_as_row('validation.csv', row_contents)
+            apiresults = [{'success':usermail}] 
+            response = jsonify(apiresults)
+            response.headers.set('Access-Control-Allow-Origin', '*')    
+            response.headers.set('cache-control', 'public,max-age=0')  
+            return response       
     else:
         return errormessage('Cannot find validation.csv')
  
@@ -661,7 +646,7 @@ def graph():
                 })
             fig.write_html('static/graph.html') 
 
-            results = [{ 'image':'http://' + os.environ['IP'] + '/static/graph.html'}]
+            results = [{ 'image':'http://127.0.0.1:5000/static/graph.html'}]
 
             response = jsonify(results)
 
@@ -716,11 +701,12 @@ def getimage():
                 transitionlist.append(str(eachtransition))
                 
             for eacharc in netarcs:
-                arcslist.append(str(eacharc))    
+                arcslist.append(str(eacharc))   
+            
             file_path="static/temp.svg" 
             savesvgfromalgo.save_vis_petri_net(net, initial_marking, final_marking,file_path) 
         
-            apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/temp.svg',
+            apiresults = [{ 'image':'http://127.0.0.1:5000/static/temp.svg',
                             'log_fitness':evaluation['fitness']['log_fitness'],
                             'evaluation_result':evaluation['precision'],
                             'generalization':evaluation['generalization'],
@@ -854,7 +840,6 @@ def badrequest():
             response.headers.set('Access-Control-Allow-Origin', '*')    
             response.headers.set('cache-control', 'public,max-age=0')  
             return response   
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+app.run( 
+)
  
