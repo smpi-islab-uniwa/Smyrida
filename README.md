@@ -14,8 +14,7 @@ To Run this API you must:
 4) Intall Flask cors with the command: pip install -U flask-cors
 5) Install Plotly with the command: pip install plotly 
 6) Download api.py and change os.environ['IP'] with the IP and port you want 
-7) Create an empty file named valid in the same path with the api.py
-8) Run API with the command python api.py
+7) Run API with the command python api.py
 
 To run the web Interface you can find guide in the following link:
 https://github.com/smpi-islab-uniwa/Smyrida/tree/main/React
