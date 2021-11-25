@@ -1,0 +1,10 @@
+Activities Mean Duration
+++++++++++++++++++++++++
+
+
+Each activity has a duration, as it happens through time. Showing the mean duration of each activity, is valuable information, firstly, to explore which activity takes a lot of time to complete and secondly, to search for bottlenecks in the process and their cause.
+
+Selecting **Activities Mean Duration** from menu **Visualizations** a bar plot is created with mean durations of each activity. 
+
+.. image:: images/meanduration.png
+	:align: center

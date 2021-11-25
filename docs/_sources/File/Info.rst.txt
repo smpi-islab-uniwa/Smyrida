@@ -1,0 +1,18 @@
+Info
+++++
+
+About the Info option, the user can retrieve the next data: number of traces, number of events, file structure, an event array and how many times each event appears in the file, a table with start events and one with end events and how many traces start or end with those events.
+
+.. image:: images/3.16.jpg
+	:align: center
+
+.. image:: images/3.17.jpg
+	:align: center
+
+.. image:: images/3.18.jpg
+	:align: center
+
+In case the user selects a csv file then the web interface will first appear a select header webpage.
+
+.. image:: images/3.19.jpg
+	:align: center

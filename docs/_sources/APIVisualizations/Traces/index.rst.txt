@@ -1,0 +1,10 @@
+Traces
+-------
+
+.. toctree::   
+   :maxdepth: 2
+   :caption: Contents: 
+   
+   Variants <apivariants.rst> 
+   Variants Frequency <apivariantsfrequency.rst> 
+   Traces Duration over time <apitracedurations.rst> 

@@ -1,0 +1,12 @@
+Convert to csv 
+++++++++++++++
+
+Similar to the last option, convert to csv does not allow the user to convert a csv file and when the user selects a xes file the following web page appears
+
+.. image:: images/3.13.jpg
+	:align: center
+
+In case the user presses yes, on the left files list the converted file appears with the repairExample.csv.
+
+.. image:: images/3.14.jpg
+	:align: center

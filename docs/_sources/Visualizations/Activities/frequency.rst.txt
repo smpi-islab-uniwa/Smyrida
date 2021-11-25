@@ -1,0 +1,11 @@
+Activities Frequency
+++++++++++++++++++++
+
+
+An event log contains at least the trace id, the activity name and the timestamp the activity was ended. Knowing the frequence of each activity is a valuable information so as to understand the importance of an activity or filter the event log accordingly.
+
+From menu **Visualizations** choose **Activities Frequency**, a bar blot with the number of occurencies for each activity is presented.
+Hover over each bar to see the activity name and the number of occurencies.
+
+.. image:: images/frequency.png
+	:align: center

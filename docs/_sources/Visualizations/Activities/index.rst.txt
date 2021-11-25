@@ -1,0 +1,12 @@
+Activities
+----------
+
+.. toctree::   
+   :maxdepth: 2
+   :caption: Contents: 
+   
+   Activities Frequency <frequency.rst>
+   Activities Mean Duration <meandurations.rst>
+   Activities Frequency & Mean Duration <activityfrequencyduration.rst>
+   Activities over time <conceptname.rst>
+   Activities Duration over time <activityduration.rst>

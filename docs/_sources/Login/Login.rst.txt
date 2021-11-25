@@ -1,0 +1,9 @@
+Login
++++++
+
+The user must provide an e-mail address and a password in order to use the web application.
+
+E-mail must be in a valid format. Both inputs must not be empty. Otherwise a validate message will inform the user.
+
+.. image:: images/Login.png
+	:align: center

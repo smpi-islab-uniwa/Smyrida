@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Activities over time &#8212; Smyrida 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Activities Duration over time" href="apiactivityduration.html" />
+    <link rel="prev" title="Activities Frequency and Mean Duration" href="apifrequencymeanduration.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="activities-over-time">
+<h1>Activities over time<a class="headerlink" href="#activities-over-time" title="Permalink to this headline">¶</a></h1>
+<p>To get a plot (in html format) with the activities throughout time, the user must provide two parameteres in the request to /conceptname endpoint:</p>
+<dl class="field-list simple">
+<dt class="field-odd"><strong>filename</strong></dt>
+<dd class="field-odd"><p>the name of the event log</p>
+</dd>
+<dt class="field-even"><strong>folder</strong></dt>
+<dd class="field-even"><p>the folder of the event log which is the email of the user (login email)</p>
+</dd>
+</dl>
+<p>A get request must be sent to the following address:</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://&lt;server_ip&gt;:5000/conceptname?filename=PurchasingExample.xes&amp;folder=&lt;email_address&gt;</span></code></p>
+<p>where text with &lt;&gt; should be replaced with the corresponding information.</p>
+<p>The response is:</p>
+<p>image: <a class="reference external" href="http:/">http:/</a>/&lt;server_ip&gt;:5000/static/conceptname.html</p>
+<p>and the conceptname.html is an html graph as shown in the following picture:</p>
+<img alt="../../_images/conceptname.png" class="align-center" src="../../_images/conceptname.png" />
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../int_introduction2.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../int_Theoretical%20Background.html">Theoretical Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../int_Process%20Discovery.html">Process Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../int_Conformance%20checking.html">Conformance checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../int_Evaluation.html">Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../int_References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Software:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Login/index.html">Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../File/index.html">File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Discover%20Model/index.html">Discover Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Visualizations/index.html">Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Conformance%20Checking/index.html">Conformance Checking</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../System%20Walkthrough.html">System Walkthrough</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../APIFile/index.html">File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Discover%20Model.html">Discover Model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Visualizations</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Activities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Traces/index.html">Traces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Others/index.html">Others</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../APIConformance%20Checking/index.html">Conformance Checking</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Visualizations</a><ul>
+  <li><a href="index.html">Activities</a><ul>
+      <li>Previous: <a href="apifrequencymeanduration.html" title="previous chapter">Activities Frequency and Mean Duration</a></li>
+      <li>Next: <a href="apiactivityduration.html" title="next chapter">Activities Duration over time</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Systems Modelling and Process Intelligence - University of West Attica.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/APIVisualizations/Activities/apiconceptname.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

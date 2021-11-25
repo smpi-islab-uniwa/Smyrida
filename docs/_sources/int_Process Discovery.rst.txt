@@ -1,0 +1,43 @@
+Process Discovery
++++++++++++++++++
+  
+Process Discovery algorithms want to find a suitable process model that describes the order of events/activities that are executed during a process execution. [6]
+
+**Alpha Miner**
+
+The alpha miner is one of the most known Process Discovery algorithm and is able to find:
+
+* A Petri net model where all the transitions are visible and unique and correspond to classified events (for example, to activities).
+* An initial marking that describes the status of the Petri net model when a execution starts.
+* A final marking that describes the status of the Petri net model when a execution ends.
+
+Although this algorithm has the following disadvantage:
+
+* Cannot handle loops of length one and length two
+* Invisible and duplicated tasks cannot be discovered
+* Discovered model might not be sound
+* Weak against noise [6]
+
+**Inductive Miner**
+
+The basic idea of Inductive Miner is about detecting a ‘cut’ in the log (e.g. sequential cut, parallel cut, concurrent cut and loop cut) and then recur on sublogs, which were found applying the cut, until a base case is found. The Directly-Follows variant avoids the recursion on the sublogs but uses the Directly Follows graph.
+
+Inductive miner models usually make extensive use of hidden transitions, especially for skipping/looping on a portion on the model. Furthermore, each visible transition has a unique label (there are no transitions in the model that share the same label).
+
+Two process models can be derived: Petri Net and Process Tree.
+
+Some advantages of this algorithm are:
+
+* Can handle invisible tasks
+* Model is sound
+* Most used process mining algorithm [6]
+
+**Heuristic Miner**
+
+Heuristics Miner is an algorithm that acts on the Directly-Follows Graph, providing way to handle with noise and to find common constructs (dependency between two activities, AND). The output of the Heuristics Miner is a Heuristics Net, so an object that contains the activities and the relationships between them. The Heuristics Net can be then converted into a Petri net.
+
+It is possible to obtain a Heuristic Net and a Petri Net.
+
+To apply the Heuristics Miner to discover a Heuristics Net, it is necessary to import a log. Then, a Heuristic Net can be found. There are also numerous possible parameters that can be inspected by clicking on the following button.  
+
+In addition, this algorithm takes frequency into account, detects short loops but does not guarantee a sound model.[6]

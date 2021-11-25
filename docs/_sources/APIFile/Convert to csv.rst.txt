@@ -1,0 +1,54 @@
+Convert to csv 
+++++++++++++++
+
+The user can convert his uploaded .xes files to .csv, on the server side of this application. The user has to call the endpoint: http://127.0.0.1:5000/convertocsv?filename=(name_of_file).xes.
+
+With the help of Swagger Inspector [13] below there is a definition of the specific endpoint of the API:
+
+get:
+
+description: Auto generated using Swagger Inspector
+
+parameters:
+
+- name: filename
+
+in: query
+
+schema:
+
+type: string
+
+example: repairexample.xes
+
+responses:
+
+'200':
+
+description: Auto generated using Swagger Inspector
+
+content:
+
+application/json:
+
+schema:
+
+type: object
+
+properties: {}
+
+examples:
+
+'0':
+
+value: |
+
+[
+
+{
+
+"csvname": "repairexample.csv"
+
+}
+
+]

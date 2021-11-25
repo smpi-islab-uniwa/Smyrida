@@ -1,0 +1,12 @@
+File
+++++
+
+.. toctree::   
+   :caption: Contents: 
+   :maxdepth: 2
+   
+   Upload.rst
+   Convert to xes.rst 
+   Convert to csv.rst 
+   View.rst
+   Info.rst

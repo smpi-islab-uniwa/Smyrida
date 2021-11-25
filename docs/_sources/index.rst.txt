@@ -1,0 +1,58 @@
+.. Smyrida documentation master file, created by
+   sphinx-quickstart on Fri Sep 17 21:23:53 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+ 
+.. image:: images/uniwa.jpg
+	:align: center
+
+.. centered:: UNIVERSITY OF WEST ATTICA 
+
+.. centered:: DEPARTMENT OF INFORMATICS AND COMPUTER ENGINEERING
+
+
+.. toctree::  
+   :hidden:
+   :caption: Introduction: 
+    
+   int_introduction2.rst   
+   int_Theoretical Background.rst
+   int_Process Discovery.rst
+   int_Conformance checking.rst
+   int_Evaluation.rst
+   int_References.rst
+
+    
+.. toctree::  
+   :maxdepth: 2
+   :hidden:
+   :caption: Software: 
+    
+   Login/index.rst
+   File/index.rst
+   Discover Model/index.rst 
+   Visualizations/index.rst
+   Conformance Checking/index.rst 
+   
+.. toctree::  
+   :hidden:  
+   
+   System Walkthrough.rst
+   
+.. toctree:: 
+   :maxdepth: 2
+   :hidden:
+   :caption: API: 
+    
+   APIFile/index.rst
+   Discover Model.rst
+   APIVisualizations/index.rst
+   APIConformance Checking/index.rst 
+   
+.. centered:: Intelligent Knowledge, Image & Information Systems - ISLab
+
+.. centered:: Systems Modelling and Process Intelligence (research group)
+
+.. centered:: Smyrida - A Process Mining Software Tool
+
+The name of the software was inspired by a stone mined mainly in the Greek island Naxos, which is suitable for the abrasion of glass and creation of asphalt due to its high stoniness and anti-slippery quality respectively. In the past years, mining smyrida contributed significantly to the establishment of a flourishing economy in the island. 

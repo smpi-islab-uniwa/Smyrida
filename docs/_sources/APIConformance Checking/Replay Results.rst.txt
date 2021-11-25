@@ -1,0 +1,119 @@
+Replay Results
+++++++++++++++
+  
+**Replay results for xes files**
+
+For the replay results, the user has to call the endpoint: http://127.0.0.1:5000/getreplayresults?filename=(name_of_csvfile)&algorithm=(exactly_the same numbers as discover process)
+
+.. image:: images/2.13.jpg
+	:align: center
+	 
+get:
+
+description: Auto generated using Swagger Inspector
+
+parameters:
+
+- name: filename
+
+in: query
+
+schema:
+
+type: string
+
+example: repairexample.xes
+
+- name: algorithm
+
+in: query
+
+schema:
+
+type: string
+
+example: '3'
+
+**Replay results for csv files**
+
+For the replay results for csv files, the user has to call the endpoint: http://127.0.0.1:5000/getreplayresultscsv?filename=(name_of_csvfile)&sitealgo=(exactly_the same numbers as discover process)&seperator=(csv_column_separtor)&caseconcept=(the_column to rename)&conceptname=(the_column to rename)×tamp=(the_column to rename)&startevent=(the_column to rename)
+
+.. image:: images/2.14.jpg
+	:align: center
+	 
+	 
+get:
+
+description: Auto generated using Swagger Inspector
+
+parameters:
+
+- name: caseconcept
+
+in: query
+
+schema:
+
+type: string
+
+example: Case%20ID
+
+- name: filename
+
+in: query
+
+schema:
+
+type: string
+
+example: running-example.csv
+
+- name: startevent
+
+in: query
+
+schema:
+
+type: string
+
+example: Costs
+
+- name: conceptname
+
+in: query
+
+schema:
+
+type: string
+
+example: Activity
+
+- name: seperator
+
+in: query
+
+schema:
+
+type: string
+
+example: ;
+
+- name: sitealgo
+
+in: query
+
+schema:
+
+type: string
+
+example: '3'
+
+- name: timestamp
+
+in: query
+
+schema:
+
+type: string
+
+example: 'dd-MM-yyyy:HH.mm'

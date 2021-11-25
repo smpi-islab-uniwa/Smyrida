@@ -1,0 +1,28 @@
+Replay Results
+++++++++++++++
+
+When the user hovers the menu Conformance then he can select the option replay results or alignments In case the user selects replay results, then a dropdown appears with the three discovery models (alpha miner, Inductive Miner, Heuristics Miner) as option. If the file is csv, then the other four dropdowns from header select will appear in this screen as well.
+
+.. image:: images/3.25.jpg
+	:align: center
+
+When the user selects one of the three algorithms then a table appears with the following data
+
+* Trace is fit
+* Trace fitness
+* Activated Transitions
+* Reached Marking
+* Enabled transitions in marking
+* Transitions with problems
+* Missing Tokens
+* Consumed Tokens
+* Remaining Tokens
+* Produced Tokens
+	
+	
+.. image:: images/3.26.jpg
+	:align: center
+
+.. image:: images/3.27.jpg
+	:align: center
+

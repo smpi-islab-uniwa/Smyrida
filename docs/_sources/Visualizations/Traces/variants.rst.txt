@@ -1,0 +1,17 @@
+Variants
+++++++++
+
+Each time a process runs, a trace is created that consist of a sequence of activities. Some sequences are repeated. Variants are the unique sequences of activities. In the figure of variants each activity is represented as a rectagle in different color (same color for same activity). This is a very important figure because the user can see the number, the length and the frequncy of each variant, but most important the pattern of variants.  
+For example in this process each variant starts and ends with the same activity.
+
+From menu **Visualizations** choose **Variants** under group Traces.
+
+.. image:: images/variants.png
+	:align: center
+
+Under the figure the sequence of activities for each variant is mentioned.
+
+
+.. image:: images/variants-1.png
+	:align: center
+  

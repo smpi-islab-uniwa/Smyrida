@@ -1,0 +1,64 @@
+html {
+	font-family: 'Lato', sans-serif;
+	
+}
+
+body {
+	font-family: 'Lato', sans-serif;
+	
+}
+
+div.document {
+	width: 100%;
+}
+
+div.bodywrapper {
+	margin: 0 0 0 320px;
+}
+
+div.body {
+	min-width: none;
+	max-width: none;
+}
+
+div.sphinxsidebarwrapper {
+	padding: 20px 40px;
+}
+
+div.sphinxsidebar h3 {
+	border-bottom: 2px solid #dc905e; 
+	margin-top: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 5px;	
+	
+}
+
+div.sphinxsidebar li {
+	
+    margin-left: 20px;
+    
+	
+}
+
+div.sphinxsidebar {
+	width: 320px;
+	background-color: #262924;
+	color: white;	
+	
+}
+
+
+div.sphinxsidebar * {
+
+	color: white!important;	
+	
+}
+
+input[type="submit"] {
+	background-color: #262924;
+	
+}
+
+p.caption {
+	font-size: 21px;
+}

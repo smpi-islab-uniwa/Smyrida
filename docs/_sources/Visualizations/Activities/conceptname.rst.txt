@@ -1,0 +1,17 @@
+Activities over time
+++++++++++++++++++++
+
+To depict each activity that happened throughout time, a scatter plot is created, colored by trace id. 
+
+
+.. image:: images/3.png
+	:align: center
+	
+
+By selecting a region, "zoom in" allows to see a period of time in more detail. Double click restores the initial zoom level.
+
+.. image:: images/3-1.png
+	:align: center
+
+.. image:: images/3-2.png
+	:align: center	

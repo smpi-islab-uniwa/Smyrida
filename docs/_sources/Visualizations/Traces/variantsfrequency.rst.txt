@@ -1,0 +1,9 @@
+Variants Frequency
++++++++++++++++++++
+
+Variants are the unique sequences of activities (unique traces). From menu **Visualizations** choose **Variants Frequency** under group Traces. A plot with the frequency of each variant is presented. 
+
+.. image:: images/variantsfrequency.png
+	:align: center
+
+  

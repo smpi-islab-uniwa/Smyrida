@@ -1,0 +1,25 @@
+Activities Duration over time
++++++++++++++++++++++++++++++
+
+To get a plot (in html format) with the activities durations throughout time, the user must provide two parameteres in the request to /activity_duration endpoint:
+
+:**filename**: the name of the event log
+
+:**folder**: the folder of the event log which is the email of the user (login email)
+
+A get request must be sent to the following address:
+
+``http://<server_ip>:5000/activity_duration?filename=PurchasingExample.xes&folder=<email_address>``
+
+where text with <> should be replaced with the corresponding information.
+
+The response is:
+
+image: http://<server_ip>:5000/static/activity_duration.html
+
+and the activity_duration.html is an html graph as shown in the following picture:
+
+.. image:: images/activity_duration.png
+	:align: center
+
+    

@@ -1,0 +1,27 @@
+Variants
+++++++++
+
+To get a plot (in html format) with the variants (unique traces - sequence of activities), the user must provide two parameteres in the request to /variants endpoint:
+
+:**filename**: the name of the event log
+
+:**folder**: the folder of the event log which is the email of the user (login email)
+
+In the plot activities are represented as a colored box. The variant have an id number and the frequency that occures (percentage).
+
+A get request must be sent to the following address:
+
+``http://<server_ip>:5000/variants?filename=PurchasingExample.xes&folder=<email_address>``
+
+where text with <> should be replaced with the corresponding information.
+
+The response is:
+
+image: http://<server_ip>:5000/static/variants.html
+
+and the variants.html is an html graph as shown in the following picture:
+
+.. image:: images/variants.png
+	:align: center
+
+    

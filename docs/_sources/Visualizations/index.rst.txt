@@ -1,0 +1,10 @@
+Visualizations
+++++++++++++++
+
+.. toctree::   
+   :maxdepth: 3
+   :caption: Contents: 
+   
+   Activities/index.rst
+   Traces/index.rst  
+   Others/index.rst 
