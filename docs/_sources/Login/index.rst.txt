@@ -1,9 +1,0 @@
-Login
-+++++
-
-.. toctree::   
-   :maxdepth: 2
-   :caption: Contents: 
-   
-   Singup.rst
-   Login.rst
