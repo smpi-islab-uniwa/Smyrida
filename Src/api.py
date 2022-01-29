@@ -10,7 +10,7 @@ import pandas as pd
 import json  
 from flask_cors import CORS 
 import matplotlib.pylab as plt 
-from matplotlib.pyplot import figure 
+from matplotlib.pyplot import figure, scatter 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 from pm4py import discovery as discover_algo  
@@ -32,16 +32,19 @@ from pm4py.statistics.traces.log.case_statistics import get_variant_statistics
 from pm4py.statistics.attributes.log.get import get_all_event_attributes_from_log, get_attribute_values
 import sys
 import sqlite3
+import numpy as np
+import textwrap
 
 os.environ['IP'] = '127.0.0.1:5000'
 cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 
+
+
+
 if os.path.exists('static') == False:
     os.makedirs('static')
-#Antwnia
 
-#problem1
 
 def first_last(df):
         
@@ -159,12 +162,14 @@ def read_request_file_to_dataframe():
 @app.route('/hello')
 def hello_world():   
     return "hello world"  
+
+
 @app.route('/conceptname', methods=['POST', 'GET'])
 def conceptname():
     
     msg, dataframe = read_request_file_to_dataframe()
-    print('result\n',msg)
-    print('dataframe\n',dataframe)
+    #print('result\n',msg)
+    #print('dataframe\n',dataframe)
     
     if dataframe.empty == False:
         fig = px.scatter(dataframe, x="time:timestamp", y="concept:name",  color="case:concept:name", title="Activities and Trace Ids Through Time", labels={
@@ -185,13 +190,43 @@ def conceptname():
     else:
         return errormessage(msg)
 
+
+@app.route('/activities_traces', methods=['POST', 'GET'])
+def activities_traces():
+    
+    msg, dataframe = read_request_file_to_dataframe()
+    if dataframe.empty == False:
+        fig = px.scatter(dataframe, x="concept:name", y="case:concept:name",  color="concept:name", title="Activities of Traces", labels={
+                "concept:name": "Activity",
+                "case:concept:name" : "Trace ID",
+                })
+        fig.write_html('static/activities_traces.html')  
+        results = [{ 'image':'http://' + os.environ['IP'] + '/static/activities_traces.html'}]
+
+        response = jsonify(results)
+
+        response.headers.set('Access-Control-Allow-Origin', '*')    
+
+        response.headers.set('cache-control', 'public,max-age=0') 
+
+        return response; 
+
+    else:
+        return errormessage(msg)
+
+
+
+
+
+
+
 @app.route('/activity_duration', methods=['POST', 'GET'])
 
 def activity_duration():
     
     msg, dataframe = read_request_file_to_dataframe()
-    print('result\n',msg)
-    print('dataframe\n',dataframe)
+    #print('result\n',msg)
+    #print('dataframe\n',dataframe)
     
     if dataframe.empty == False:             
                      
@@ -233,14 +268,15 @@ def trace_duration():
     if dataframe.empty == False:   
                 
                  df_grouped_trace = dataframe.groupby("case:concept:name", as_index=False).apply(first_last)
-    
-                 fig = px.scatter(df_grouped_trace, y="trace_duration", x = "time:timestamp", color = "case:concept:name", 
+                 
+                 fig = px.scatter(df_grouped_trace, y="trace_duration", x = "time:timestamp", color = "case:concept:name", size="trace_duration",
                                   title="Trace Durations Through Time", labels={
                                       "trace_duration": "Trace Duration (hours)",
                                       "case:concept:name": "Trace",
                                       "time:timestamp": "Date"
                                       }) 
     
+                 
                  fig.write_html('static/trace_duration.html') 
     
                  apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/trace_duration.html'}]
@@ -287,6 +323,7 @@ def mean_durations():
                          "concept:name": "Activity"
     
                      })
+                     fig.update_traces(marker_color='red')
     
                      fig.write_html('static/activity_mean_durations.html') 
     
@@ -306,18 +343,224 @@ def mean_durations():
         return errormessage(msg)
 
 
+
+@app.route('/activity_frequency_duration', methods=['POST', 'GET'])
+
+def activity_frequency_duration():
+    
+    msg, dataframe = read_request_file_to_dataframe()
+
+    if dataframe.empty == False:  
+        df = dataframe
+        df = df.groupby('concept:name').count()
+                 
+        if ("start_timestamp" in dataframe.columns.values):
+
+            dataframe["duration"] = pd.to_datetime(dataframe['time:timestamp'],utc=True).astype('int64') - pd.to_datetime(dataframe["start_timestamp"],utc=True).astype('int64')  
+
+            try:
+                dataframe["duration"] = dataframe["duration"] / 10**9
+            except Exception as e: 
+                errormessage(e)
+
+            df_reduced = dataframe.groupby("concept:name", as_index=False)["duration"].mean()
+                    
+        fig = go.Figure(data=
+            [
+                go.Bar(name = 'Frequency', x=df.index, y=df["case:concept:name"]),
+                go.Bar(name = 'Mean Duration', y=df_reduced.duration, x =df_reduced["concept:name"])
+            ]
+        )
+
+
+        # Change the bar mode
+        fig.update_layout(barmode='group')
+        fig.write_html('static/activity_frequency_duration.html') 
+    
+        apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/activity_frequency_duration.html'}]
+
+        response = jsonify(apiresults)
+
+        response.headers.set('Access-Control-Allow-Origin', '*')    
+
+        response.headers.set('cache-control', 'public,max-age=0') 
+
+        return response; 
+
+
+    else:
+        return errormessage(msg)
+
+
+
+
+
+@app.route('/variants_count', methods=['POST', 'GET'])
+
+def variants_count():
+    
+
+        #check this log converted to dataframe and again to log
+        msg, dataframe = read_request_file_to_dataframe() 
+        if dataframe.empty == False: 
+            #notraces,noevents,tracelist,start_activities,end_activities,dictionary = firstassignment(log)  
+            log = pm4py.convert_to_event_log(dataframe)
+            #print('dataframe\n',dataframe)
+            variants = get_variant_statistics(log) 
+            #print('variants\n',type(variants))
+            #print(len(variants))
+            df = pd.DataFrame(variants)
+            #print('df\n',df)
+            fig = px.bar(df, y="variant", x ="count", title="Variants Frequency", labels = {'variant':'Variants','count':'Frequency'})
+    
+            fig.write_html('static/variants_count.html') 
+    
+            apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/variants_count.html'}]
+    
+            response = jsonify(apiresults)
+    
+            response.headers.set('Access-Control-Allow-Origin', '*')    
+    
+            response.headers.set('cache-control', 'public,max-age=0') 
+    
+            return response; 
+        else:
+            return errormessage("No data in the file")
+
+@app.route('/variants', methods=['POST', 'GET'])
+
+def variants():
+    
+
+        #check this log converted to dataframe and again to log
+        msg, dataframe = read_request_file_to_dataframe() 
+        if dataframe.empty == False: 
+            #notraces,noevents,tracelist,start_activities,end_activities,dictionary = firstassignment(log)  
+            log = pm4py.convert_to_event_log(dataframe)
+            variants = get_variant_statistics(log) 
+            #print(type(variants))
+            #df = pd.DataFrame(variants)
+            
+            var_dict = []
+            variant_list = []
+            var_count = []
+            for var in variants:
+                #var_dict.append({'variant': var['variant'].split(','), 'count': var['count']})
+                variant_list.append(var['variant'].split(','))
+                var_count.append(var['count'])
+            #print(variant_list)    
+            #print(var_count)
+            #print(len(variant_list))    
+            #print(len(var_count))
+            var_count = np.divide(var_count, sum(var_count))
+            var_count = ['{:.3f}%'.format(el) for el in var_count]
+            
+            #print(var_count)
+            
+            import plotly.graph_objects as go
+            #x-axis number of activities for each trace
+            vlengths = [len(v) for v in variant_list]
+
+            #produce colormap with as many colors as there are unique values in df
+            import matplotlib._color_data as mcd
+            colors = [name for name in mcd.CSS4_COLORS if "xkcd:" + name in mcd.XKCD_COLORS][0:max(vlengths)]
+            
+            events = get_attribute_values(log,'concept:name')            
+             
+            map(str, np.arange(0, len(var_count))) 
+            labels = list(map(' - '.join, zip(map(str, np.arange(0, len(var_count))) , var_count)))
+            #print('labels ',labels)
+            events = pd.DataFrame.from_dict(events.keys())
+            events.columns=['event']
+            #print('Y-AXIS ', np.arange(0.0, len(var_count)*0.2, 0.2).tolist())
+            fig = go.Figure(layout_yaxis_range=[0, len(var_count)], layout_xaxis_range=[0, max(vlengths)*0.4])
+            
+            fig.update_layout(height=3000)
+            #fig.update_layout(showlegend=True)
+
+            #fig.update_xaxes(range=[0, max(vlengths)])
+            fig.update_layout(  
+                yaxis = dict(
+                    tickmode = 'array',
+                    tickvals = np.arange(0, len(var_count)),
+                    ticktext = labels
+                )
+            )
+            fig.update_layout(
+                xaxis = dict(
+                    tickmode = 'array',
+                    tickvals = np.arange(0, max(vlengths)*0.4, 0.4),
+                    ticktext = ['' for i in np.arange(0, max(vlengths)*0.4, 0.4)]
+                )
+            )            
+            
+            i=0
+            for variant in variant_list:
+                v = ', '.join(variant)
+                fig.add_trace(go.Scatter(
+                    x=[0],
+                    y=[i],
+                    mode="text",
+                    name= str(i) +': ' + '<br>'.join(v[i:i+180] for i in range(0, len(v), 180)),
+                    #showlegend=False,
+                    #text=str(i) +': ' + '<br>'.join(v[i:i+180] for i in range(0, len(v), 180)), #variant,
+                    #textposition="top center"
+                    
+                ))                    
+
+                #print(variant, i)
+                j=0
+                for act in variant:
+                    #print(act, j)
+                    x = int(events[events['event'] == act].index.to_list()[0])
+                    fig.add_shape(type="rect",
+                        #xref = 'x',
+                        #yref = 'y',
+                        #layer='above',
+                        x0=j, y0=i,
+                        x1=j+0.4, y1=i+0.2,
+                        fillcolor=colors[x],
+                    )
+                    j=j+0.4
+                i=i+1    
+            #print('i ',i)
+            #print('j ',j)
+            #fig.update_layout()
+            fig.update_layout(legend=dict(
+                orientation="h",
+                #yanchor="bottom"#,
+                #y=1.02,
+                #xanchor="right",
+                #x=1
+                #loc="lower center"
+            ))
+
+            fig.write_html('static/variants.html')
+
+            apiresults = [{ 'image':'http://' + os.environ['IP'] + '/static/variants.html'}]
+    
+            response = jsonify(apiresults)
+    
+            response.headers.set('Access-Control-Allow-Origin', '*')    
+    
+            response.headers.set('cache-control', 'public,max-age=0') 
+    
+            return response; 
+        else:
+            return errormessage("No data in the file")
+
  
 @app.route('/savefile', methods=['POST']) 
 def savefile(): 
     file = request.files['file']    #the file react sends
-    print('file ',file)
+    #print('file ',file)
     filename = file.filename #name of react sends
-    print('filename ',filename)
+    #print('filename ',filename)
 
     filefolder = str(request.form.get('folder'))
     if filefolder is None:
         filefolder = 'filesfolder'
-    print('filefolder ',filefolder)
+    #print('filefolder ',filefolder)
      
     splitedfile = filename.split('.', 1)
     if filetype_isvalid(splitedfile[-1]):   #we only save on server side xes csv files
@@ -341,8 +584,10 @@ def authenticate():
     if path.exists('smyrida.db'):
         con = sqlite3.connect('smyrida.db')
         cur = con.cursor() 
+
         for row in cur.execute("SELECT username FROM users where username = ? AND password = ?" ,(usermail,password,)):
             found=True
+        
         con.close()  
         if found == True: 
             filefound = False
@@ -351,18 +596,26 @@ def authenticate():
                     splitedfile = filename.split('.', 1)
                     if filetype_isvalid(splitedfile[-1]):
                         filefound = True
-                        
+                            
             apiresults = [{'success':usermail,'hasfiles':filefound}]  
             response = jsonify(apiresults)
             response.headers.set('Access-Control-Allow-Origin', '*')    
             response.headers.set('cache-control', 'public,max-age=0')  
             return response                   
         else: 
-            return errormessage('Cannot find user or password is incorrect')
+            return errormessage('Please provide a valid e-mail or password')
     else:
-         return errormessage('Cannot find user or password is incorrect')    
+        errormessage('Database does not exist')    #geo change
+        con = sqlite3.connect('smyrida.db')
+        cur = con.cursor() 
+
+        cur.execute('''
+                CREATE TABLE IF NOT EXISTS users
+                ([username] TEXT PRIMARY KEY, [password] TEXT)
+                ''')    
          
-    
+        con.commit()        
+        con.close()
      
 
 @app.route('/createuser', methods=['POST']) 
@@ -431,11 +684,22 @@ def headers():
     csvinput = request.form.get('filename')      #returns a list of headers of a csv file
     filefolder = str(request.form.get('folder'))
     separator = str(request.form.get('seperator'))
+    print('headers ',csvinput, filefolder, separator)
+    dataframe = pd.DataFrame({})
     if filefolder is None:
         filefolder='filesfolder'
-    if separator is None:
-        errormessage('Separator is missing')    
-    dataframe = pd.read_csv(filefolder+'/'+csvinput, sep = separator)   #if seperator is wrong error will be returned
+    if separator is None or separator == '':
+        separator == ' '
+    #print('separator ', separator)
+    #if separator == '':
+        print('empty separator', separator)
+    print(filefolder+'/'+csvinput)    
+    try:
+        dataframe = pd.read_csv(filefolder+'/'+csvinput, sep = separator)   #if seperator is wrong error will be returned
+    except Exception as e: 
+         print(e)
+         
+    print(dataframe)
     apiresults = [
                     { 
                     'dataheaderslist':list(dataframe.columns.values)
@@ -540,7 +804,7 @@ def convertoxes():
         else:
              return errormessage('File not found');
     except Exception as e:
-        errormessage(e)     
+        return errormessage(e)     
 
 @app.route('/view', methods=['POST', 'GET'])
 def view(): 
@@ -587,7 +851,7 @@ def view():
         response.headers.set('cache-control', 'public,max-age=0') 
         return response         
     except Exception as e:
-        errormessage(e) 
+        return errormessage(e) 
             
 
  
@@ -638,7 +902,7 @@ def statistics():
             response.headers.set('cache-control', 'public,max-age=0') 
             return response 
     except Exception as e:
-        errormessage(e)         
+        return errormessage(e)         
 
 
 
@@ -669,7 +933,7 @@ def graph():
             return errormessage(msg)
 
     except Exception as e:
-        errormessage(e)    
+        return errormessage(e)    
 
 
                
@@ -731,7 +995,7 @@ def getimage():
             return errormessage(msg)
 
     except Exception as e:
-        errormessage(e)  
+        return errormessage(e)  
                 
        
 @app.route('/getreplayresults', methods=['POST', 'GET'])
@@ -786,7 +1050,7 @@ def getreplayresults():
             return errormessage(msg)
 
     except Exception as e:
-        errormessage(e)  
+        return errormessage(e)  
 
 @app.route('/getalignments', methods=['POST', 'GET'])
 def getalignments():
@@ -826,7 +1090,7 @@ def getalignments():
             return errormessage(msg)
 
     except Exception as e:
-        errormessage(e)       
+        return errormessage(e)       
 
  
 def servererror():
@@ -839,8 +1103,10 @@ def servererror():
 def errormessage(message):
             apiresults = [{'api_error': message}]
             response = jsonify(apiresults)
+            print('response\n', response)
             response.headers.set('Access-Control-Allow-Origin', '*')    
             response.headers.set('cache-control', 'public,max-age=0')  
+            print('response\n', response)
             return response              
 def badrequest():
             apiresults = [{'400':'Bad request'}]
