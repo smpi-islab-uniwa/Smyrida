@@ -230,6 +230,9 @@ class Middle extends Component {
               </div>
               </li>
               <li className="logout">
+                  <a href="https://smpi-islab-uniwa.github.io/Smyrida/"  className="logoutspan" target="_blank">Documentation</a>
+              </li>
+              <li className="logout">
                   <a href="#/"  className="logoutspan" onClick={this.logout}>Log Out</a>
               </li>
             </ul>
