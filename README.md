@@ -10,7 +10,7 @@ To Run this API you must:
 
 1) First setup Python 
 2) Install anaconda https://www.anaconda.com/products/individual#windows
-3) Install PM4PY with the following command: pip install pm4py-2.2.4
+3) Install PM4PY with the following command: pip install pm4py-2.2.28
 4) Intall Flask cors with the command: pip install -U flask-cors
 5) Install Plotly with the command: pip install plotly 
 6) Download api.py and change os.environ['IP'] with the IP and port you want 
