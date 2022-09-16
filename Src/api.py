@@ -28,7 +28,7 @@ import plotly.graph_objects as go
 from pm4py.objects.log.util import interval_lifecycle
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.statistics.end_activities.log.get import get_end_activities
-from pm4py.statistics.traces.log.case_statistics import get_variant_statistics
+from pm4py.statistics.traces.generic.log.case_statistics import get_variant_statistics
 from pm4py.statistics.attributes.log.get import get_all_event_attributes_from_log, get_attribute_values
 import sys
 import sqlite3
